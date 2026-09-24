@@ -18,7 +18,26 @@ typedef struct
 /* TODO */
 void count_in_buffer(const char *buf, int *crit, int *err, int *fail)
 {
-    (void)buf; (void)crit; (void)err; (void)fail;
+    const char *position = buf;
+
+    while ( (position = (strstr(position ,"CRITICAL"))) != NULL  ){
+        (*crit)++;
+        position+=8;
+    }
+
+    position = buf;
+
+    while ( (position = (strstr(position ,"ERROR")))  != NULL  ){
+        (*err)++;
+        position+=5;
+    }
+
+    position = buf;
+
+    while ( (position = (strstr(position ,"FAILED LOGIN"))) != NULL  ){
+        (*fail)++;
+        position+=12;
+    }
 }
 
 /* TODO */

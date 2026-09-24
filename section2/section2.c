@@ -45,8 +45,24 @@ void count_keywords_block(const char *filename, off_t start, off_t end,
                            const char *prev_tail, int prev_len,
                            int *crit, int *err, int *fail)
 {
-    (void)filename; (void)start; (void)end;
-    (void)prev_tail; (void)prev_len; (void)crit; (void)err; (void)fail;
+    int fd = open (filename, O_RDONLY);
+
+    lseek (fd, start, SEEK_SET);
+
+    int buffer_size = end - start + prev_len + 1;
+
+    char buffer[buffer_size];
+
+    strncpy(buffer,prev_tail,prev_len);
+    
+    int char_readed = read(fd, buffer + prev_len, end - start );
+
+    buffer[char_readed + prev_len ] = '\0';
+
+    count_in_buffer(buffer ,crit, err, fail);
+
+    close(fd);
+
 }
 
 /* TODO */
